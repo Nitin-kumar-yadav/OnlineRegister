@@ -12,7 +12,6 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // Check localStorage first, then system preference
     const stored = localStorage.getItem("theme");
     if (stored) return stored;
     return window.matchMedia("(prefers-color-scheme: dark)").matches

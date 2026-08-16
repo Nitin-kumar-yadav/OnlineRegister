@@ -1,6 +1,43 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────
+   Custom Fonts — @font-face
+   ────────────────────────────────────────────── */
+
+@font-face {
+  font-family: "ManufacturingConsent";
+  src: url("./assets/ManufacturingConsent-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ──────────────────────────────────────────────
+   Tailwind v4 Theme — Font Tokens
+   ────────────────────────────────────────────── */
+
+@theme {
+  --font-inter: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-manufacturing: "ManufacturingConsent", system-ui, sans-serif;
+}
+
+/* ──────────────────────────────────────────────
    Design Tokens — Dark / Light
    ────────────────────────────────────────────── */
 
@@ -81,7 +118,7 @@ html {
 }
 
 body {
-  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: var(--font-inter);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.4s ease, color 0.4s ease;
