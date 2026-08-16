@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className="flex items-center justify-center min-h-[100vh] flex-col">
       <Hero />
-      <main className="mt-20 text-center mb-20">
+      <main >
         <Fleet />
         <Imperatives />
       </main>

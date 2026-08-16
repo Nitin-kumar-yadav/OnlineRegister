@@ -10,7 +10,7 @@ const footerLinks = [
 
 const Footer = () => {
     return (
-        <footer className="relative w-[75%] mx-auto bg-transparent border-t border-white/10 font-sans">
+        <footer className="relative w-[75%] mx-auto bg-transparent border-t border-white/10 font-sans" style={{ marginBottom: '20px' }} >
 
             <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#00D4FF] to-transparent opacity-40" />
 
@@ -89,7 +89,7 @@ const Footer = () => {
                     © 2026 Hindustan Aeronautics Limited. All rights reserved.
                 </p>
                 <p className="text-xs text-white/20">
-                    Sector 01 · Aerospace Command · India
+                    India
                 </p>
             </div>
         </footer>
