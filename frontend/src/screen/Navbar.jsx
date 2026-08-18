@@ -1,118 +1,206 @@
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 
 const Navbar = () => {
 
+  const { authUser, logout } = useAuthStore();
+
   return (
-    <nav
-      className="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-[78%] h-14 flex flex-row justify-between items-center px-6 rounded-full backdrop-blur-lg shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
-      style={{
-        backgroundColor: "var(--bg-surface)",
-        borderWidth: "1px",
-        borderStyle: "solid",
-        borderColor: "var(--border-color)",
-        padding: "2rem",
-      }}
-    >
-      <ul
-        className="flex flex-row items-center gap-8 font-medium"
-        style={{ color: "var(--text-secondary)" }}
+    !authUser ? (
+      <nav
+        className="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-[78%] h-14 flex flex-row justify-between items-center px-6 rounded-full backdrop-blur-lg shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+        style={{
+          backgroundColor: "var(--bg-surface)",
+          borderWidth: "1px",
+          borderStyle: "solid",
+          borderColor: "var(--border-color)",
+          padding: "2rem",
+        }}
       >
-        <li>
-          <Link
-            to="/"
-            className="transition-all"
-            style={{ "--hover-color": "var(--text-primary)" }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "var(--text-primary)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "var(--text-secondary)")
-            }
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          >
-            Command Home
-          </Link>
-        </li>
-        <li>
-          <button
-            className="transition-all font-medium cursor-pointer bg-transparent border-none"
-            style={{ color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "var(--text-primary)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "var(--text-secondary)")
-            }
-            onClick={() =>
-              document.getElementById("fleet")?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            Fleet
-          </button>
-        </li>
-        <li>
-          <button
-            className="transition-all font-medium cursor-pointer bg-transparent border-none"
-            style={{ color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "var(--text-primary)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "var(--text-secondary)")
-            }
-            onClick={() =>
-              document.getElementById("imperatives")?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            Imperatives
-          </button>
-        </li>
-      </ul>
-
-      <div className="flex items-center gap-4">
-
-        <Link
-          to="/login"
-          className="px-5 py-2 font-medium transition-colors"
+        <ul
+          className="flex flex-row items-center gap-8 font-medium"
           style={{ color: "var(--text-secondary)" }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.color = "var(--text-primary)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.color = "var(--text-secondary)")
-          }
         >
-          Login
-        </Link>
-        <Link
-          to="/signup"
-          className="px-6 py-2 rounded-full font-medium transition-all uppercase"
-          style={{
-            backgroundColor: "var(--bg-surface)",
-            borderWidth: "1px",
-            borderStyle: "solid",
-            borderColor: "var(--border-color)",
-            color: "var(--text-primary)",
-            height: "35px",
-            width: "200px",
-            textAlign: "center",
-            paddingTop: "5px",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor =
-              "var(--bg-surface-hover)";
-            e.currentTarget.style.boxShadow = "var(--shadow-glow)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "var(--bg-surface)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
+          <li>
+            <Link
+              to="/"
+              className="transition-all"
+              style={{ "--hover-color": "var(--text-primary)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--text-primary)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-secondary)")
+              }
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              Command Home
+            </Link>
+          </li>
+          <li>
+            <button
+              className="transition-all font-medium cursor-pointer bg-transparent border-none"
+              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--text-primary)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-secondary)")
+              }
+              onClick={() =>
+                document.getElementById("fleet")?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Fleet
+            </button>
+          </li>
+          <li>
+            <button
+              className="transition-all font-medium cursor-pointer bg-transparent border-none"
+              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--text-primary)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-secondary)")
+              }
+              onClick={() =>
+                document.getElementById("imperatives")?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Imperatives
+            </button>
+          </li>
+        </ul>
+
+        <div className="flex items-center gap-4">
+
+          <Link
+            to="/login"
+            className="px-5 py-2 font-medium transition-colors"
+            style={{ color: "var(--text-secondary)" }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.color = "var(--text-primary)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "var(--text-secondary)")
+            }
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className="px-6 py-2 rounded-full font-medium transition-all uppercase"
+            style={{
+              backgroundColor: "var(--bg-surface)",
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderColor: "var(--border-color)",
+              color: "var(--text-primary)",
+              height: "35px",
+              width: "200px",
+              textAlign: "center",
+              paddingTop: "5px",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor =
+                "var(--bg-surface-hover)";
+              e.currentTarget.style.boxShadow = "var(--shadow-glow)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "var(--bg-surface)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+          >
+            Request Access
+          </Link>
+        </div>
+      </nav>
+    ) : (
+      <nav
+        className="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-[78%] h-14 flex flex-row justify-between items-center px-6 rounded-full backdrop-blur-lg shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+        style={{
+          backgroundColor: "var(--bg-surface)",
+          borderWidth: "1px",
+          borderStyle: "solid",
+          borderColor: "var(--border-color)",
+          padding: "2rem",
+        }}
+      >
+        <ul
+          className="flex flex-row items-center gap-8 font-medium"
+          style={{ color: "var(--text-secondary)" }}
         >
-          Request Access
-        </Link>
-      </div>
-    </nav>
+          <li>
+            <Link
+              to="/register"
+              className="transition-all"
+              style={{ "--hover-color": "var(--text-primary)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--text-primary)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-secondary)")
+              }
+            >
+              Create Register
+            </Link>
+          </li>
+          <li>
+            <button
+              className="transition-all font-medium cursor-pointer bg-transparent border-none"
+              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--text-primary)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-secondary)")
+              }
+              onClick={() =>
+                document.getElementById("fleet")?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Fleet
+            </button>
+          </li>
+          <li>
+            <button
+              className="transition-all font-medium cursor-pointer bg-transparent border-none"
+              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--text-primary)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-secondary)")
+              }
+              onClick={() =>
+                document.getElementById("imperatives")?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Imperatives
+            </button>
+          </li>
+        </ul>
+
+        <div className="flex items-center gap-4">
+
+          <button
+            onClick={logout}
+            className="px-5 py-2 font-medium transition-colors cursor-pointer bg-transparent border-none"
+            style={{ color: "var(--text-secondary)" }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.color = "var(--text-primary)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "var(--text-secondary)")
+            }
+          >
+            Logout
+          </button>
+        </div>
+      </nav>
+    )
   );
 };
 
