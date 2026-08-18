@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import heroBg from '../assets/hero.png';
 import { HiOutlineUser, HiOutlineLockClosed } from 'react-icons/hi2';
+import { useAuthStore } from '../store/useAuthStore';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const { login } = useAuthStore();
+
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    })
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log('Login attempt:', { username, password });
+        const res = login(formData);
+        if (res.success) {
+            navigate('/dashboard');
+        }
     };
 
     return (
@@ -36,20 +45,17 @@ const Login = () => {
                     </h2>
 
                     <form className='flex flex-col gap-5 w-[80%] mt-6'>
-                        {/* Username Field */}
                         <div className='flex items-center gap-3 w-full bg-black/40 border border-white/10 rounded-lg px-4 py-1 focus-within:border-[#00D4FF]/50 focus-within:ring-1 focus-within:ring-[#00D4FF]/50 transition-all duration-300'>
                             <span className='text-gray-400'><HiOutlineUser className="w-5 h-5" /></span>
-                            <input type="text" placeholder='Username' className='w-full bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]' />
+                            <input type="text" placeholder='Username' className='w-full bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]' value={formData.username} onChange={(e) => setFormData({ ...formData, username: e.target.value })} />
                         </div>
 
-                        {/* Password Field */}
                         <div className='flex items-center gap-3 w-full bg-black/40 border border-white/10 rounded-lg px-4 py-1 focus-within:border-[#00D4FF]/50 focus-within:ring-1 focus-within:ring-[#00D4FF]/50 transition-all duration-300'>
                             <span className='text-gray-400'><HiOutlineLockClosed className="w-5 h-5" /></span>
-                            <input type="password" placeholder='Password' className='w-full bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]' />
+                            <input type="password" placeholder='Password' className='w-full bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]' value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
                         </div>
 
-                        {/* Login Button */}
-                        <button type='submit' className='w-full mt-4 py-3.5 bg-[#00D4FF]/10 border border-[#00D4FF]/30 hover:bg-[#00D4FF]/20 hover:border-[#00D4FF]/50 text-[#00D4FF] font-semibold rounded-lg tracking-widest uppercase text-sm transition-all duration-300 shadow-[0_0_15px_rgba(0,212,255,0.1)] hover:shadow-[0_0_25px_rgba(0,212,255,0.3)] h-[50px] cursor-pointer' style={{ marginBottom: '20px' }}>
+                        <button onClick={handleLogin} type='submit' className='w-full mt-4 py-3.5 bg-[#00D4FF]/10 border border-[#00D4FF]/30 hover:bg-[#00D4FF]/20 hover:border-[#00D4FF]/50 text-[#00D4FF] font-semibold rounded-lg tracking-widest uppercase text-sm transition-all duration-300 shadow-[0_0_15px_rgba(0,212,255,0.1)] hover:shadow-[0_0_25px_rgba(0,212,255,0.3)] h-[50px] cursor-pointer' style={{ marginBottom: '20px' }}>
                             Authenticate
                         </button>
                     </form>
