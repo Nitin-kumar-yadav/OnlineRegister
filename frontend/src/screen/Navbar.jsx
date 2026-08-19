@@ -147,40 +147,6 @@ const Navbar = () => {
               Create Register
             </Link>
           </li>
-          <li>
-            <button
-              className="transition-all font-medium cursor-pointer bg-transparent border-none"
-              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--text-primary)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "var(--text-secondary)")
-              }
-              onClick={() =>
-                document.getElementById("fleet")?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              Fleet
-            </button>
-          </li>
-          <li>
-            <button
-              className="transition-all font-medium cursor-pointer bg-transparent border-none"
-              style={{ color: "var(--text-secondary)", fontFamily: "var(--font-inter)" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--text-primary)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "var(--text-secondary)")
-              }
-              onClick={() =>
-                document.getElementById("imperatives")?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              Imperatives
-            </button>
-          </li>
         </ul>
 
         <div className="flex items-center gap-4">

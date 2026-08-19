@@ -30,7 +30,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={!authUser ? <Home /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/register" element={!authUser ? <Register /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/register" element={authUser ? <Register /> : <Navigate to="/login" replace />} />
         <Route path="/entries" element={authUser ? <Entries /> : <Navigate to="/login" replace />} />
         <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to="/login" replace />} />
         <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/dashboard" replace />} />
