@@ -4,6 +4,7 @@ import heroBg from '../assets/hero.png';
 import { FaBook, FaTrash, FaPlus } from "react-icons/fa";
 import { useAuthStore } from '../store/useAuthStore';
 import toast from 'react-hot-toast';
+import { useRegisterStore } from '../store/useRegisterStore';
 
 const DataFieldSet = () => {
 
@@ -21,6 +22,28 @@ const DataFieldSet = () => {
     const handleNameChange = (id, newName) => {
         setFields(fields.map(field => field.id === id ? { ...field, name: newName } : field));
     };
+    const navigate = useNavigate();
+    const { CreateRegister, FieldSet, register } = useRegisterStore();
+    const handleCreateRegister = async () => {
+        try {
+            const result = await CreateRegister(registerName);
+            if (result) {
+                toast.success('Register created successfully');
+            }
+            setRegisterName("")
+            const fieldsResponse = await FieldSet(result?._id, fields);
+            console.log(fieldsResponse);
+            if (fieldsResponse) {
+                toast.success('Fields added successfully');
+            }
+            setFields([]);
+            navigate("/dashboard")
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const [registerName, setRegisterName] = useState('');
 
     return (
         <div
@@ -45,20 +68,30 @@ const DataFieldSet = () => {
                         Create Register
                     </h2>
 
-                    <form className='flex flex-col gap-5 w-full mt-6'>
+                    <div className='flex flex-col gap-5 w-full mt-6'>
+                        <div className='flex items-center gap-3 w-full bg-black/40 border border-white/10 rounded-lg px-4 py-1 focus-within:border-[#00D4FF]/50 focus-within:ring-1 focus-within:ring-[#00D4FF]/50 transition-all duration-300'>
+                            <span className='text-gray-400'><FaBook className="w-5 h-5" /></span>
+                            <input
+                                type='text'
+                                placeholder='Register Name'
+                                value={registerName}
+                                onChange={(e) => setRegisterName(e.target.value)}
+                                className='w-full bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]'
+                            />
+                        </div>
                         {fields.map((field, index) => (
                             <div key={field.id} className='flex items-center gap-3 w-full bg-black/40 border border-white/10 rounded-lg px-4 py-1 focus-within:border-[#00D4FF]/50 focus-within:ring-1 focus-within:ring-[#00D4FF]/50 transition-all duration-300'>
                                 <span className='text-gray-400'><FaBook className="w-5 h-5" /></span>
-                                <input 
-                                    type="text" 
-                                    placeholder={index === 0 ? 'Register Name' : `Data Field ${index}`} 
+                                <input
+                                    type="text"
+                                    placeholder={`Data Field ${index}`}
                                     value={field.name}
                                     onChange={(e) => handleNameChange(field.id, e.target.value)}
-                                    className='w-full bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]' 
+                                    className='w-full bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]'
                                 />
                                 {index > 0 && (
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => removeField(field.id)}
                                         className="text-red-500 hover:text-red-400 p-1"
                                     >
@@ -69,8 +102,8 @@ const DataFieldSet = () => {
                         ))}
 
                         <div className="flex justify-end w-full">
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 onClick={addField}
                                 className="flex items-center gap-2 text-sm text-[#00D4FF] hover:text-white transition-colors"
                             >
@@ -78,10 +111,10 @@ const DataFieldSet = () => {
                             </button>
                         </div>
 
-                        <button type='submit' className='w-full mt-4 py-3.5 bg-[#00D4FF]/10 border border-[#00D4FF]/30 hover:bg-[#00D4FF]/20 hover:border-[#00D4FF]/50 text-[#00D4FF] font-semibold rounded-lg tracking-widest uppercase text-sm transition-all duration-300 shadow-[0_0_15px_rgba(0,212,255,0.1)] hover:shadow-[0_0_25px_rgba(0,212,255,0.3)] h-[50px] cursor-pointer' style={{ marginBottom: '20px' }}>
+                        <button onClick={handleCreateRegister} className='w-full mt-4 py-3.5 bg-[#00D4FF]/10 border border-[#00D4FF]/30 hover:bg-[#00D4FF]/20 hover:border-[#00D4FF]/50 text-[#00D4FF] font-semibold rounded-lg tracking-widest uppercase text-sm transition-all duration-300 shadow-[0_0_15px_rgba(0,212,255,0.1)] hover:shadow-[0_0_25px_rgba(0,212,255,0.3)] h-[50px] cursor-pointer' style={{ marginBottom: '20px' }}>
                             Create
                         </button>
-                    </form>
+                    </div>
 
                 </div>
             </div>

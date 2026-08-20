@@ -8,16 +8,18 @@ const Card = () => {
 
     const { getAllRegister, register } = useRegisterStore();
 
-    if (register == null) {
-        useEffect(() => {
-            getAllRegister();
-            return
-        }, [getAllRegister])
-    }
+    useEffect(() => {
+        getAllRegister();
+    }, [getAllRegister]);
+
     console.log(register)
 
     const buttonListner = (id) => {
         toast.success(id)
+    }
+
+    if (!register || !Array.isArray(register)) {
+        return <Loader />;
     }
 
     return (
