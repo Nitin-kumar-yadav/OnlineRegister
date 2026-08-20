@@ -134,21 +134,6 @@ const Navbar = () => {
         >
           <li>
             <Link
-              to="/register"
-              className="transition-all"
-              style={{ "--hover-color": "var(--text-primary)" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--text-primary)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "var(--text-secondary)")
-              }
-            >
-              Create Register
-            </Link>
-          </li>
-          <li>
-            <Link
               to="/dashboard"
               className="transition-all"
               style={{ "--hover-color": "var(--text-primary)" }}
@@ -160,6 +145,21 @@ const Navbar = () => {
               }
             >
               Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/createregister"
+              className="transition-all"
+              style={{ "--hover-color": "var(--text-primary)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--text-primary)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-secondary)")
+              }
+            >
+              Create Register
             </Link>
           </li>
         </ul>
