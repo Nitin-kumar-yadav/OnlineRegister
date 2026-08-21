@@ -8,11 +8,13 @@ import { useRegisterStore } from '../store/useRegisterStore';
 
 const DataFieldSet = () => {
 
-    const [fields, setFields] = useState([{ id: Date.now(), name: '' }]);
+    const [fields, setFields] = useState([{ id: Date.now(), name: '', type: 'String' }]);
+
+    const fieldTypes = ['String', 'Number', 'Date', 'Boolean'];
 
     const addField = (e) => {
         e.preventDefault();
-        setFields([...fields, { id: Date.now(), name: '' }]);
+        setFields([...fields, { id: Date.now(), name: '', type: 'String' }]);
     };
 
     const removeField = (id) => {
@@ -21,6 +23,10 @@ const DataFieldSet = () => {
 
     const handleNameChange = (id, newName) => {
         setFields(fields.map(field => field.id === id ? { ...field, name: newName } : field));
+    };
+
+    const handleTypeChange = (id, newType) => {
+        setFields(fields.map(field => field.id === id ? { ...field, type: newType } : field));
     };
     const navigate = useNavigate();
     const { CreateRegister, FieldSet, register } = useRegisterStore();
@@ -87,8 +93,20 @@ const DataFieldSet = () => {
                                     placeholder={`Data Field ${index}`}
                                     value={field.name}
                                     onChange={(e) => handleNameChange(field.id, e.target.value)}
-                                    className='w-full bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]'
+                                    className='flex-1 bg-transparent text-white outline-none p-2 placeholder-gray-500 h-[30px]'
                                 />
+                                <select
+                                    value={field.type}
+                                    onChange={(e) => handleTypeChange(field.id, e.target.value)}
+                                    className='bg-white/10 text-white text-xs border border-white/15 rounded-md px-2 py-1.5 outline-none cursor-pointer appearance-none focus:border-[#00D4FF]/50 transition-all duration-200'
+                                    style={{ minWidth: '85px' }}
+                                >
+                                    {fieldTypes.map((t) => (
+                                        <option key={t} value={t} className='bg-[#1a1a24] text-white'>
+                                            {t}
+                                        </option>
+                                    ))}
+                                </select>
                                 {index > 0 && (
                                     <button
                                         type="button"

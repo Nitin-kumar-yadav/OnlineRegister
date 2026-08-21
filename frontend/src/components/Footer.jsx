@@ -86,7 +86,7 @@ const Footer = () => {
 
             <div className="px-6 md:px-16 lg:px-24 py-4 flex flex-col md:flex-row items-center justify-between gap-2 border-t border-white/5">
                 <p className="text-xs text-white/25">
-                    © 2026 Hindustan Aeronautics Limited. All rights reserved.
+                    © {new Date().getFullYear()} Hindustan Aeronautics Limited. All rights reserved.
                 </p>
                 <p className="text-xs text-white/20">
                     India

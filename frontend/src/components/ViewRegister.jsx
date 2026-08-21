@@ -4,12 +4,16 @@ import { useRegisterStore } from '../store/useRegisterStore';
 import Loader from './Loader';
 import heroImg from '../assets/hero.png';
 import toast from 'react-hot-toast';
+import { FaTrash, FaFileExcel } from 'react-icons/fa';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 const ViewRegister = () => {
     const { id } = useParams();
-    const { fields, entries, getFields, getEntries, addEntry } = useRegisterStore();
+    const { fields, entries, getFields, getEntries, addEntry, deleteEntry } = useRegisterStore();
     const [formData, setFormData] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [deletingId, setDeletingId] = useState(null);
 
     useEffect(() => {
         getFields(id);
@@ -76,6 +80,31 @@ const ViewRegister = () => {
         }
     };
 
+    const handleExportExcel = () => {
+        if (!entries || entries.length === 0) {
+            toast.error('No entries to export');
+            return;
+        }
+
+        const rows = entries.map((entry, index) => {
+            const row = { '#': index + 1 };
+            fieldList.forEach((field) => {
+                row[field.name] = entry.data?.[field.name] ?? '';
+            });
+            row['IP'] = entry.systemIP || '';
+            row['Created'] = entry.createdAt
+                ? new Date(entry.createdAt).toLocaleString()
+                : '';
+            return row;
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(rows);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, registerName);
+        XLSX.writeFile(workbook, `${registerName}.xlsx`);
+        toast.success('Exported to Excel');
+    };
+
     return (
         <div className="relative min-h-screen w-full overflow-hidden flex flex-col items-center gap-6" style={{ marginTop: "120px" }}>
 
@@ -89,13 +118,24 @@ const ViewRegister = () => {
             </div>
 
             <div className="relative z-10 px-4 sm:px-8 pb-12 w-full max-w-7xl mx-auto">
-                <div className="mb-8">
-                    <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-wide drop-shadow-lg">
-                        {registerName}
-                    </h1>
-                    <p className="mt-2 text-gray-300 text-sm">
-                        {entries.length} {entries.length === 1 ? 'entry' : 'entries'} found
-                    </p>
+                <div className="mb-8 flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-wide drop-shadow-lg">
+                            {registerName}
+                        </h1>
+                        <p className="mt-2 text-gray-300 text-sm">
+                            {entries.length} {entries.length === 1 ? 'entry' : 'entries'} found
+                        </p>
+                    </div>
+                    {entries.length > 0 && (
+                        <button
+                            onClick={handleExportExcel}
+                            className="flex items-center gap-2 px-5 py-3 text-sm font-medium text-green-400 bg-green-500/10 border border-green-500/25 hover:bg-green-500/20 hover:border-green-500/40 rounded-lg transition-all duration-200 cursor-pointer whitespace-nowrap"
+                        >
+                            <FaFileExcel size={16} />
+                            Export Excel
+                        </button>
+                    )}
                 </div>
                 {fieldList.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
@@ -122,6 +162,8 @@ const ViewRegister = () => {
                                     </th>
                                     <th className="px-6 py-5 text-sm font-semibold uppercase tracking-widest text-indigo-300">
                                         Created
+                                    </th>
+                                    <th className="px-6 py-5 text-sm font-semibold uppercase tracking-widest text-indigo-300">
                                     </th>
                                 </tr>
                             </thead>
@@ -153,11 +195,12 @@ const ViewRegister = () => {
                                             {isSubmitting ? 'Adding...' : '+ Add'}
                                         </button>
                                     </td>
+                                    <td className="px-6 py-4"></td>
                                 </tr>
                                 {entries.length === 0 ? (
                                     <tr>
                                         <td
-                                            colSpan={fieldList.length + 3}
+                                            colSpan={fieldList.length + 4}
                                             className="px-5 py-16 text-center text-gray-400"
                                         >
                                             No entries yet. Add your first one above.
@@ -187,6 +230,25 @@ const ViewRegister = () => {
                                                 {entry.createdAt
                                                     ? new Date(entry.createdAt).toLocaleString()
                                                     : '—'}
+                                            </td>
+                                            <td className="px-5 py-4">
+                                                <button
+                                                    onClick={async () => {
+                                                        setDeletingId(entry._id);
+                                                        try {
+                                                            await deleteEntry(entry._id, id);
+                                                            toast.success('Entry deleted');
+                                                        } catch (err) {
+                                                            toast.error(err.response?.data?.message || 'Failed to delete');
+                                                        } finally {
+                                                            setDeletingId(null);
+                                                        }
+                                                    }}
+                                                    disabled={deletingId === entry._id}
+                                                    className="text-red-500/60 hover:text-red-400 transition-colors duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                                                >
+                                                    <FaTrash size={14} />
+                                                </button>
                                             </td>
                                         </tr>
                                     ))

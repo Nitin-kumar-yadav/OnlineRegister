@@ -47,4 +47,10 @@ export const useRegisterStore = create((set, get) => ({
         set({ entries: updated.data });
         return response.data;
     },
+
+    deleteEntry: async (entryId, registerId) => {
+        await axios.delete(`http://localhost:5000/api/register/entries/${entryId}`);
+        const updated = await axios.get(`http://localhost:5000/api/register/${registerId}/entries`);
+        set({ entries: updated.data });
+    },
 }))

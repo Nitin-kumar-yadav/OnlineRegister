@@ -88,7 +88,7 @@ const Imperatives = () => {
                             </div>
                             <span
                                 className="text-5xl font-bold text-white mb-2 leading-none"
-                                style={{ fontFamily: "var(--font-manufacturing)" }}
+                                style={{ fontFamily: "var(--font-inter)", fontWeight: "900" }}
                             >
                                 {c.stat}
                             </span>
