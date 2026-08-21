@@ -15,14 +15,14 @@ const router = express.Router();
 
 // Register routes
 router.post("/create", protectRoute, createRegister);
-router.get("/", getRegisters);
+router.get("/", protectRoute, getRegisters);
 
 
 router.post("/:registerId/fields", protectRoute, setFields);
 router.get("/:registerId/fields", protectRoute, getFields);
 
 router.post("/:registerId/entries", protectRoute, addEntry);
-router.get("/:registerId/entries", getEntries);
+router.get("/:registerId/entries", protectRoute, getEntries);
 router.put("/entries/:id", protectRoute, updateEntry);
 router.delete("/entries/:id", protectRoute, deleteEntry);
 

@@ -4,6 +4,8 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 export const useRegisterStore = create((set, get) => ({
     register: JSON.parse(localStorage.getItem("register")) || null,
+    fields: null,
+    entries: null,
 
     getAllRegister: async () => {
         set({ register: null });
@@ -24,14 +26,25 @@ export const useRegisterStore = create((set, get) => ({
         set({ register: null });
         const response = await axios.post(`http://localhost:5000/api/register/${registerId}/fields`, { fields });
         set({ register: response.data.register });
-        localStorage.setItem("register", JSON.stringify(response.data.register));
         return response.data.register;
     },
 
     getFields: async (registerId) => {
-        set({ register: null });
+        set({ fields: null });
         const response = await axios.get(`http://localhost:5000/api/register/${registerId}/fields`);
-        set({ register: response.data });
-        localStorage.setItem("register", JSON.stringify(response.data));
+        set({ fields: response.data });
+    },
+
+    getEntries: async (registerId) => {
+        set({ entries: null });
+        const response = await axios.get(`http://localhost:5000/api/register/${registerId}/entries`);
+        set({ entries: response.data });
+    },
+
+    addEntry: async (registerId, data) => {
+        const response = await axios.post(`http://localhost:5000/api/register/${registerId}/entries`, { data });
+        const updated = await axios.get(`http://localhost:5000/api/register/${registerId}/entries`);
+        set({ entries: updated.data });
+        return response.data;
     },
 }))

@@ -11,6 +11,7 @@ import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
 import PageLoader from "./components/PageLoader"
 import CreateRegister from "./components/Createregister"
+import ViewRegister from "./components/ViewRegister"
 
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/dashboard" replace />} />
         <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/dashboard" replace />} />
         <Route path="/createregister" element={authUser ? <CreateRegister /> : <Navigate to="/login" replace />} />
+        <Route path="/viewregister/:id" element={authUser ? <ViewRegister /> : <Navigate to="/login" replace />} />
       </Routes>
       <Toaster />
     </>

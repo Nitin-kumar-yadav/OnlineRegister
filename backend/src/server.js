@@ -9,6 +9,7 @@ import userRouter from "./routes/user.route.js";
 import cors from "cors";
 
 const app = express();
+app.set("trust proxy", true);
 app.use(cors({
     origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],

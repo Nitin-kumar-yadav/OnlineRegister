@@ -1,25 +1,23 @@
-import React from 'react'
 import { useRegisterStore } from '../store/useRegisterStore';
 import { useEffect } from 'react';
 import Loader from './Loader';
-import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Card = () => {
 
     const { getAllRegister, register } = useRegisterStore();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getAllRegister();
     }, [getAllRegister]);
 
-    console.log(register)
-
-    const buttonListner = (id) => {
-        toast.success(id)
-    }
-
     if (!register || !Array.isArray(register)) {
         return <Loader />;
+    }
+
+    const viewRegister = (id) => {
+        navigate(`/viewregister/${id}`);
     }
 
     return (
@@ -27,7 +25,7 @@ const Card = () => {
             {register.map((item) => (
                 < div
                     className="group relative w-48 h-64 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(255,255,255,0.15)] cursor-pointer"
-                    onClick={() => buttonListner(item._id)}
+                    onClick={() => viewRegister(item._id)}
                     key={item._id}
                 >
                     <div className="absolute w-32 h-32 bg-indigo-500/50 rounded-full blur-[40px] -left-8 -top-8 transition-transform duration-700 group-hover:translate-x-12 group-hover:translate-y-12"></div>

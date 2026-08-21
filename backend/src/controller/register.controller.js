@@ -82,27 +82,67 @@ export const getFields = async (req, res) => {
 };
 
 
+// Helper to check if an IP is private/local
+const isPrivateIp = (ip) => {
+    if (!ip) return true;
+    return (
+        ip === "127.0.0.1" ||
+        ip === "localhost" ||
+        ip === "::1" ||
+        ip.startsWith("10.") ||
+        ip.startsWith("172.16.") || ip.startsWith("172.17.") || ip.startsWith("172.18.") ||
+        ip.startsWith("172.19.") || ip.startsWith("172.2") || ip.startsWith("172.3") ||
+        ip.startsWith("192.168.") ||
+        ip === "unknown"
+    );
+};
 
-// Helper to reliably extract the client IP
-const getClientIp = (req) => {
-    // x-forwarded-for can contain a comma-separated list: "client, proxy1, proxy2"
-    const forwarded = req.headers["x-forwarded-for"];
+// Helper to reliably extract the client's public IP
+const getClientIp = async (req) => {
+    // Check common proxy/CDN headers in priority order
+    const headerNames = [
+        "cf-connecting-ip",        // Cloudflare
+        "x-real-ip",               // Nginx
+        "x-client-ip",             // Apache
+        "x-forwarded-for",         // Standard proxy header
+        "forwarded",               // RFC 7239
+        "x-appengine-user-ip",     // Google App Engine
+        "true-client-ip",          // Akamai / Cloudflare Enterprise
+    ];
+
     let ip;
 
-    if (forwarded) {
-        ip = forwarded.split(",")[0].trim();
-    } else {
+    for (const header of headerNames) {
+        const value = req.headers[header];
+        if (value) {
+            // x-forwarded-for can be comma-separated: "client, proxy1, proxy2"
+            ip = value.split(",")[0].trim();
+            break;
+        }
+    }
+
+    // Fall back to Express req.ip
+    if (!ip) {
         ip = req.ip || req.connection?.remoteAddress || req.socket?.remoteAddress || "unknown";
     }
 
-    // Normalize IPv6-mapped IPv4 addresses (e.g. "::ffff:127.0.0.1" -> "127.0.0.1")
+    // Normalize IPv6-mapped IPv4 (e.g. "::ffff:127.0.0.1" -> "127.0.0.1")
     if (ip && ip.startsWith("::ffff:")) {
         ip = ip.replace("::ffff:", "");
     }
-
-    // Normalize IPv6 loopback
     if (ip === "::1") {
         ip = "127.0.0.1";
+    }
+
+    // If IP is private/local, fetch the public IP from an external service
+    if (isPrivateIp(ip)) {
+        try {
+            const response = await fetch("https://api.ipify.org?format=json");
+            const data = await response.json();
+            if (data.ip) ip = data.ip;
+        } catch (err) {
+            // Keep the local IP if external service fails
+        }
     }
 
     return ip;
@@ -140,7 +180,7 @@ export const addEntry = async (req, res) => {
             });
         }
 
-        const systemIP = getClientIp(req);
+        const systemIP = await getClientIp(req);
 
         const newEntry = await Data.create({ registerId, data, systemIP });
         return res.status(201).json({ message: "Entry added successfully", data: newEntry });
