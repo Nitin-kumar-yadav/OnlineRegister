@@ -6,11 +6,18 @@ import cookieParser from "cookie-parser";
 import connectDB from "./connection/db.js";
 import registerRouter from "./routes/register.route.js";
 import userRouter from "./routes/user.route.js";
+import cors from "cors";
 
 const app = express();
+app.set("trust proxy", true);
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express.json());
 app.use(cookieParser());
-
 app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3001;

@@ -40,12 +40,7 @@ const Fleet = () => {
         <section
             id="fleet"
             className="w-full py-20 px-6 md:px-16 lg:px-24"
-            style={{
-                marginTop: "50px",
-                width: "100%",
-                overflow: "hidden",
-
-            }}
+            style={{ marginTop: "50px" }}
         >
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-12">
                 <h2
@@ -125,7 +120,7 @@ const Fleet = () => {
                             </span>
                         </div>
 
-                        <div className="flex flex-col flex-1 p-5 h-[300px] justify-evenly w-[380px]">
+                        <div className="flex flex-col flex-1 p-5 justify-evenly gap-2 w-full">
 
                             <h3
                                 className="text-xl font-bold text-white mb-1"

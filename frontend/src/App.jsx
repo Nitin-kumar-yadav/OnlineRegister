@@ -10,7 +10,9 @@ import Dashboard from "./screen/Dashboard"
 import { useAuthStore } from "./store/useAuthStore"
 import { useEffect } from "react"
 import PageLoader from "./components/PageLoader"
-import Getregister from "./components/Getregister"
+import CreateRegister from "./components/Createregister"
+import ViewRegister from "./components/ViewRegister"
+
 
 
 const App = () => {
@@ -30,12 +32,13 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={!authUser ? <Home /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/register" element={!authUser ? <Register /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/register" element={authUser ? <Register /> : <Navigate to="/login" replace />} />
         <Route path="/entries" element={authUser ? <Entries /> : <Navigate to="/login" replace />} />
         <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to="/login" replace />} />
         <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/dashboard" replace />} />
         <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/getregister" element={authUser ? <Getregister /> : <Navigate to="/login" replace />} />
+        <Route path="/createregister" element={authUser ? <CreateRegister /> : <Navigate to="/login" replace />} />
+        <Route path="/viewregister/:id" element={authUser ? <ViewRegister /> : <Navigate to="/login" replace />} />
       </Routes>
       <Toaster />
     </>
