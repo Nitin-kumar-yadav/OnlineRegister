@@ -1,15 +1,10 @@
-import { Route, Routes, Navigate } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import Navbar from "./screen/Navbar"
 import Home from "./screen/Home"
 import Register from "./components/Register"
 import Entries from "./components/Entries"
-import Login from "./screen/Login"
-import Signup from "./screen/Signup"
 import { Toaster } from 'react-hot-toast'
 import Dashboard from "./screen/Dashboard"
-import { useAuthStore } from "./store/useAuthStore"
-import { useEffect } from "react"
-import PageLoader from "./components/PageLoader"
 import CreateRegister from "./components/Createregister"
 import ViewRegister from "./components/ViewRegister"
 
@@ -17,28 +12,16 @@ import ViewRegister from "./components/ViewRegister"
 
 const App = () => {
 
-  const { isCheckingAuth, authUser, checkAuth } = useAuthStore();
-
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth])
-
-  if (isCheckingAuth) {
-    return <PageLoader />
-  }
-
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={!authUser ? <Home /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/register" element={authUser ? <Register /> : <Navigate to="/login" replace />} />
-        <Route path="/entries" element={authUser ? <Entries /> : <Navigate to="/login" replace />} />
-        <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to="/login" replace />} />
-        <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/createregister" element={authUser ? <CreateRegister /> : <Navigate to="/login" replace />} />
-        <Route path="/viewregister/:id" element={authUser ? <ViewRegister /> : <Navigate to="/login" replace />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/entries" element={<Entries />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/createregister" element={<CreateRegister />} />
+        <Route path="/viewregister/:id" element={<ViewRegister />} />
       </Routes>
       <Toaster />
     </>

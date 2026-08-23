@@ -266,3 +266,32 @@ export const deleteEntry = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const deleteRegister = async (req, res) => {
+    try {
+        const { registerId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(registerId)) {
+            return res.status(400).json({ message: "Invalid register ID" });
+        }
+
+        const register = await Register.findById(registerId);
+        if (!register) {
+            return res.status(404).json({ message: "Register not found" });
+        }
+
+        // Delete all entries related to this register
+        const deletedEntries = await Data.deleteMany({ registerId });
+
+        // Delete the register itself
+        await Register.findByIdAndDelete(registerId);
+
+        return res.status(200).json({
+            message: "Register and all related entries deleted successfully",
+            deletedEntriesCount: deletedEntries.deletedCount
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
