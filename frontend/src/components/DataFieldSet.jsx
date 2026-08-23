@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import heroBg from '../assets/hero.png';
 import { FaBook, FaTrash, FaPlus } from "react-icons/fa";
-import { useAuthStore } from '../store/useAuthStore';
 import toast from 'react-hot-toast';
 import { useRegisterStore } from '../store/useRegisterStore';
 

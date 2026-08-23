@@ -5,7 +5,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import connectDB from "./connection/db.js";
 import registerRouter from "./routes/register.route.js";
-import userRouter from "./routes/user.route.js";
+// import userRouter from "./routes/user.route.js";
 import cors from "cors";
 
 const app = express();
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/register", registerRouter);
-app.use("/api/user", userRouter);
+// app.use("/api/user", userRouter);
 
 app.use((err, req, res, next) => {
     console.log(err)

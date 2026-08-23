@@ -7,23 +7,26 @@ import {
     addEntry,
     getEntries,
     updateEntry,
-    deleteEntry
+    deleteEntry,
+    deleteRegister
 } from "../controller/register.controller.js";
-import { protectRoute } from "../middleware/auth.middleware.js"
+// import { protectRoute } from "../middleware/auth.middleware.js"
 
 const router = express.Router();
 
 // Register routes
-router.post("/create", protectRoute, createRegister);
-router.get("/", protectRoute, getRegisters);
+router.post("/create", createRegister);
+router.get("/", getRegisters);
+router.delete("/:registerId", deleteRegister);
 
 
-router.post("/:registerId/fields", protectRoute, setFields);
-router.get("/:registerId/fields", protectRoute, getFields);
+router.post("/:registerId/fields", setFields);
+router.get("/:registerId/fields", getFields);
 
-router.post("/:registerId/entries", protectRoute, addEntry);
-router.get("/:registerId/entries", protectRoute, getEntries);
-router.put("/entries/:id", protectRoute, updateEntry);
-router.delete("/entries/:id", protectRoute, deleteEntry);
+router.post("/:registerId/entries", addEntry);
+router.get("/:registerId/entries", getEntries);
+router.put("/entries/:id", updateEntry);
+router.delete("/entries/:id", deleteEntry);
+
 
 export default router;

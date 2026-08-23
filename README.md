@@ -1,16 +1,16 @@
 # Online Register - Dynamic Form & Data Management System
 
-A full-stack web application that allows users to create dynamic registers (custom forms), configure custom fields (String, Number, Date, Boolean), and manage data entries. The application features user authentication, a responsive premium dark UI, and Excel export functionality.
+A full-stack web application that allows users to create dynamic registers (custom forms), configure custom fields (String, Number, Date, Boolean), and manage data entries. The application features a responsive premium dark UI and Excel export functionality.
 
 ## Features
 
-- **Authentication System:** Secure JWT-based authentication with HTTP-only cookies, signup, login, and protected routes.
-- **Dynamic Registers:** Users can dynamically create custom registers and specify the data fields required.
+- **Dynamic Registers:** Create custom registers and specify the data fields required.
 - **Configurable Fields:** Choose data types for fields including String, Number, Date, and Boolean.
 - **Data Management:** Add, view, and delete data entries within specific registers.
+- **Register Deletion:** Delete an entire register along with all its related entries (cascade delete) with a two-click confirmation.
 - **Smart Entry Capture:** Automatically captures the client's public IP address and creation timestamps.
 - **Excel Export:** Export all register entries to `.xlsx` files with a single click.
-- **Premium UI:** Built with React, TailwindCSS, and framer-motion/css transitions, featuring a dark mode, glassmorphism, and responsive layout.
+- **Premium UI:** Built with React, TailwindCSS, and CSS transitions, featuring a dark mode, glassmorphism, and responsive layout.
 
 ## Tech Stack
 
@@ -29,10 +29,7 @@ A full-stack web application that allows users to create dynamic registers (cust
 - **Runtime:** Node.js
 - **Framework:** Express.js
 - **Database:** MongoDB with Mongoose
-- **Security:** 
-  - `bcryptjs` (Password Hashing)
-  - `jsonwebtoken` (JWT Auth)
-  - `cors` & `cookie-parser`
+- **Middleware:** `cors` & `cookie-parser`
 - **Utilities:** `dotenv`
 
 ## Project Structure
@@ -41,9 +38,8 @@ A full-stack web application that allows users to create dynamic registers (cust
 ├── backend/                  # Node.js Express Backend
 │   ├── src/
 │   │   ├── connection/       # MongoDB connection setup
-│   │   ├── controller/       # Route controllers (Auth, Registers)
-│   │   ├── middleware/       # JWT Auth protection
-│   │   ├── model/            # Mongoose schemas (User, Register, Data)
+│   │   ├── controller/       # Route controllers (Registers, Entries)
+│   │   ├── model/            # Mongoose schemas (Register, Data)
 │   │   ├── routes/           # Express routes
 │   │   └── server.js         # Entry point
 │   ├── .env                  # Environment variables
@@ -53,8 +49,8 @@ A full-stack web application that allows users to create dynamic registers (cust
     ├── src/
     │   ├── assets/           # Images, fonts, icons
     │   ├── components/       # Reusable components (Card, Loader, ViewRegister)
-    │   ├── screen/           # Page views (Home, Login, Dashboard, Navbar)
-    │   ├── store/            # Zustand global stores (useAuthStore, useRegisterStore)
+    │   ├── screen/           # Page views (Home, Dashboard, Navbar)
+    │   ├── store/            # Zustand global stores (useRegisterStore)
     │   ├── App.jsx           # Main routing component
     │   ├── main.jsx          # React entry point
     │   └── index.css         # Global styles & Tailwind config
@@ -72,7 +68,6 @@ Create a `.env` file in the `backend/` directory:
 ```env
 PORT=5000
 MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
 NODE_ENV=development
 ```
 
@@ -97,9 +92,10 @@ NODE_ENV=development
 
 ## Application Workflow
 
-1. **Onboarding:** A user visits the application and signs up or logs in.
-2. **Dashboard:** The user is redirected to the Dashboard where they can view existing custom registers or create a new one.
+1. **Landing Page:** A user visits the application and sees the home page with Fleet and Imperatives sections.
+2. **Dashboard:** The user navigates to the Dashboard where they can view existing custom registers or create a new one.
 3. **Register Creation:** The user clicks "Create Register", provides a name, and defines the fields required (e.g., `Email` as String, `Age` as Number).
 4. **Data Entry:** Navigating to a specific register, the user sees a dynamic table based on their fields. They can use the inline input row to add new data entries.
 5. **Data Export:** The user can click the "Export Excel" button to download all current entries as a `.xlsx` spreadsheet.
-6. **Data Deletion:** Specific entries can be deleted using the trash icon in the table.
+6. **Entry Deletion:** Specific entries can be deleted using the trash icon in the table.
+7. **Register Deletion:** An entire register and all its entries can be deleted from the Dashboard using the delete icon on the register card (with confirmation).
