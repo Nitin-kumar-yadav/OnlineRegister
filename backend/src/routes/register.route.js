@@ -6,6 +6,7 @@ import {
     getFields,
     addEntry,
     getEntries,
+    getAllEntries,
     updateEntry,
     deleteEntry,
     deleteRegister
@@ -25,6 +26,7 @@ router.get("/:registerId/fields", getFields);
 
 router.post("/:registerId/entries", addEntry);
 router.get("/:registerId/entries", getEntries);
+router.get("/:registerId/entries/all", getAllEntries);
 router.put("/entries/:id", updateEntry);
 router.delete("/entries/:id", deleteEntry);
 
