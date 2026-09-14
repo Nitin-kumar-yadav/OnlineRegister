@@ -198,7 +198,61 @@ export const getEntries = async (req, res) => {
             return res.status(400).json({ message: "Invalid register ID" });
         }
 
-        const entries = await Data.find({ registerId }).sort({ createdAt: -1 });
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
+        const dateFilter = req.query.date; // YYYY-MM-DD
+
+        const query = { registerId };
+
+        if (dateFilter) {
+            const startOfDay = new Date(dateFilter + "T00:00:00.000Z");
+            const endOfDay = new Date(dateFilter + "T23:59:59.999Z");
+            if (!isNaN(startOfDay.getTime())) {
+                query.createdAt = { $gte: startOfDay, $lte: endOfDay };
+            }
+        }
+
+        const totalEntries = await Data.countDocuments(query);
+        const totalPages = Math.max(1, Math.ceil(totalEntries / limit));
+        const skip = (page - 1) * limit;
+
+        const entries = await Data.find(query)
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        return res.status(200).json({
+            entries,
+            totalEntries,
+            totalPages,
+            currentPage: page,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const getAllEntries = async (req, res) => {
+    try {
+        const { registerId } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(registerId)) {
+            return res.status(400).json({ message: "Invalid register ID" });
+        }
+
+        const dateFilter = req.query.date;
+        const query = { registerId };
+
+        if (dateFilter) {
+            const startOfDay = new Date(dateFilter + "T00:00:00.000Z");
+            const endOfDay = new Date(dateFilter + "T23:59:59.999Z");
+            if (!isNaN(startOfDay.getTime())) {
+                query.createdAt = { $gte: startOfDay, $lte: endOfDay };
+            }
+        }
+
+        const entries = await Data.find(query).sort({ createdAt: -1 });
         return res.status(200).json(entries);
     } catch (error) {
         console.log(error);
