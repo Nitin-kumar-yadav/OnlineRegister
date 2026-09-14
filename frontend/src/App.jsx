@@ -5,7 +5,7 @@ import Register from "./components/Register"
 import Entries from "./components/Entries"
 import { Toaster } from 'react-hot-toast'
 import Dashboard from "./screen/Dashboard"
-import CreateRegister from "./components/Createregister"
+import CreateRegister from "./components/CreateRegister"
 import ViewRegister from "./components/ViewRegister"
 
 
