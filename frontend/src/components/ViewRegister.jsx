@@ -148,8 +148,14 @@ const ViewRegister = () => {
 
             const worksheet = XLSX.utils.json_to_sheet(rows);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, registerName);
-            XLSX.writeFile(workbook, `${registerName}.xlsx`);
+            
+            let sheetName = registerName.replace(/[\\/*?:\[\]]/g, '').substring(0, 31);
+            if (!sheetName.trim()) sheetName = 'Export';
+            
+            let fileName = registerName.replace(/[\\/*?:"<>|]/g, '') || 'Export';
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+            XLSX.writeFile(workbook, `${fileName}.xlsx`);
             toast.success('Exported to Excel');
         } catch (error) {
             toast.error('Failed to export');
