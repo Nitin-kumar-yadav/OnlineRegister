@@ -41,7 +41,6 @@
    Design Tokens — Dark / Light
    ────────────────────────────────────────────── */
 
-:root,
 [data-theme="dark"] {
   /* Backgrounds */
   --bg-primary: #0f0f14;
